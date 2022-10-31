@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
 
+// builder.Services.AddDbContext<>()
+
 var app = builder.Build();
 
 if (builder.Environment.IsDevelopment())
