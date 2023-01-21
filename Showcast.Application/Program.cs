@@ -1,11 +1,22 @@
-using Showcast.Application.Services;
+using Showcast.Application;
+using Showcast.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
 builder.Services.AddGrpc();
+builder.Services.AddControllers();
+
+// Configure gRPC services.
+builder.Services.AddGrpcClient<Greeter.GreeterClient>(options =>
+{
+    options.Address = new Uri("http://localhost:5001");
+});
+
+builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
 // builder.Services.AddDbContext<>()
+
+builder.Services.AddHttpClient<MovieDbClient>();
 
 var app = builder.Build();
 
@@ -20,7 +31,7 @@ app.MapControllers();
 // Add instructions.
 app.MapGet("/", () => "This is API for Showcast project, please return to the main page.");
 
-// Configure gRPC Services.
-app.MapGrpcService<GreeterService>();
-
 app.Run();
+
+
+//⚠ User is suspected to be part of an online terrorist organization. Please report any suspicious activity to Discord staff.
