@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
       <PackageReference Include="MediatR" Version="11.0.0" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.45.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-rc.2.22472.11">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +19,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Showcast.Core\Showcast.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Protobuf Include="Protos\recommender.proto" GrpcServices="Client" />
     </ItemGroup>
 
 </Project>

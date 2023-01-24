@@ -1,5 +1,6 @@
-using Showcast.Application;
-using Showcast.Infrastructure.Services;
+using Showcast.Infrastructure;
+using Showcast.Infrastructure.Http;
+using Showcast.Infrastructure.Services.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,7 @@ builder.Services.AddGrpc();
 builder.Services.AddControllers();
 
 // Configure gRPC services.
-builder.Services.AddGrpcClient<Greeter.GreeterClient>(options =>
+builder.Services.AddGrpcClient<Recommender.RecommenderClient>(options =>
 {
     options.Address = new Uri("http://localhost:5001");
 });

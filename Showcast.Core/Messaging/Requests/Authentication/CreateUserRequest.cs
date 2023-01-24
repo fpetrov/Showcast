@@ -1,0 +1,7 @@
+﻿namespace Showcast.Core.Messaging.Requests.Authentication;
+
+public record CreateUserRequest(
+    string Name,
+    string Password,
+    string Fingerprint
+);
