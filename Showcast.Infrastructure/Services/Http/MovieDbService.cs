@@ -7,11 +7,11 @@ namespace Showcast.Infrastructure.Services.Http;
 /// <summary>
 /// Http client for OMDb site where all movie data located.
 /// </summary>
-public class MovieDbClient
+public class MovieDbService
 {
     private readonly HttpClient _httpClient;
     
-    public MovieDbClient(HttpClient httpClient, IConfiguration configuration)
+    public MovieDbService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
 

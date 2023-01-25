@@ -1,23 +1,15 @@
 using Showcast.Infrastructure;
-using Showcast.Infrastructure.Http;
 using Showcast.Infrastructure.Services.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpc();
 builder.Services.AddControllers();
-
-// Configure gRPC services.
-builder.Services.AddGrpcClient<Recommender.RecommenderClient>(options =>
-{
-    options.Address = new Uri("http://localhost:5001");
-});
 
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
 // builder.Services.AddDbContext<>()
 
-builder.Services.AddHttpClient<MovieDbClient>();
+builder.Services.AddHttpClient<MovieDbService>();
 
 var app = builder.Build();
 
