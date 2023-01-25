@@ -10,6 +10,7 @@ builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 // builder.Services.AddDbContext<>()
 
 builder.Services.AddHttpClient<MovieDbService>();
+builder.Services.AddHttpClient<RecommendationService>();
 
 var app = builder.Build();
 

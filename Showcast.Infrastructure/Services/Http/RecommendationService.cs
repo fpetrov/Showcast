@@ -1,4 +1,6 @@
-﻿namespace Showcast.Infrastructure.Services.Http;
+﻿using System.Net.Http.Json;
+
+namespace Showcast.Infrastructure.Services.Http;
 
 public class RecommendationService
 {
@@ -8,11 +10,12 @@ public class RecommendationService
     {
         _httpClient = httpClient;
         
-        _httpClient.BaseAddress ??= new Uri($"http://localhost:5002");
+        _httpClient.BaseAddress ??= new Uri($"http://localhost:5002/");
     }
 
-    public Task GetRecommendations()
-    {
-        return Task.CompletedTask;
-    }
+    public async Task<HttpResponseMessage> GetRecommendations(int[] likedMoviesIds) 
+        => await _httpClient.PostAsJsonAsync("recommendations/", likedMoviesIds);
+    
+    public async Task<HttpResponseMessage> GetRelativeMovies(int movieId) 
+        => await _httpClient.PostAsJsonAsync("relative/", movieId);
 }

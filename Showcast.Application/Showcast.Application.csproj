@@ -23,10 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Showcast.Infrastructure\Showcast.Infrastructure.csproj" />
     </ItemGroup>
 
