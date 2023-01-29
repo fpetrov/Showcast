@@ -8,7 +8,7 @@ public record AuthenticationOptions(
     TimeSpan RefreshTokenLifetime
 )
 {
-    public static AuthenticationOptions Default = new AuthenticationOptions(
+    public static AuthenticationOptions Default = new(
         "Showcast.Key",
         "Showcast.Application",
         "Showcast.UI",

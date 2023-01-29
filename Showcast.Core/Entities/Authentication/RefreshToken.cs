@@ -7,5 +7,5 @@ namespace Showcast.Core.Entities.Authentication;
 [Owned]
 public record RefreshToken([property: Key, JsonIgnore] int Id, string Body, string Fingerprint, DateTime Expires)
 {
-    private bool IsActive => !(DateTime.Now >= Expires);
+    public bool IsActive => !(DateTime.UtcNow >= Expires);
 }

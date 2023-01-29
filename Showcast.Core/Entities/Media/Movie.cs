@@ -14,6 +14,6 @@ public record Movie(
     string PosterAddress,
     string BoxOffice,
     [property: JsonPropertyName("imdbRating")]
-    double Rating,
-    List<Review> Reviews
+    double Rating
+    //List<Review> Reviews
 );

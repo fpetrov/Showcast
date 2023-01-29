@@ -10,7 +10,9 @@ public record User(
     string Name,
     [property: JsonIgnore]
     string Password,
+    Role Role,
+    List<RefreshToken> RefreshTokens,
     List<Movie> LikedMovies,
-    List<Movie> PlannedMovies,
-    List<Review> Reviews
+    List<Movie> PlannedMovies
+    //List<Review> Reviews
 );
