@@ -8,4 +8,16 @@ namespace Showcast.Core.Entities.Authentication;
 public record RefreshToken([property: Key, JsonIgnore] int Id, string Body, string Fingerprint, DateTime Expires)
 {
     public bool IsActive => !(DateTime.UtcNow >= Expires);
+
+    private static readonly RefreshToken Default = new(
+        1,
+        "Default",
+        "Default", 
+        DateTime.Now
+    );
+    
+    public RefreshToken() : this(Default)
+    {
+        
+    }
 }

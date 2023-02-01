@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
         services.Configure(options);
 
         services.AddScoped<IHashService, HashService>();
-        services.AddSingleton<ITokenService, TokenService>();
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserRepository, UserRepository>();
 
         services

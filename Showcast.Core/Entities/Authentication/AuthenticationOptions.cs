@@ -15,4 +15,9 @@ public record AuthenticationOptions(
         TimeSpan.FromMinutes(60),
         TimeSpan.FromDays(30)
     );
+
+    public AuthenticationOptions() : this(Default)
+    {
+        
+    }
 }
