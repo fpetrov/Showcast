@@ -83,23 +83,12 @@ namespace Showcast.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<double>("Rating")
-                        .HasColumnType("double precision")
-                        .HasAnnotation("Relational:JsonPropertyName", "imdbRating");
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime>("Released")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Movies");
                 });
@@ -115,14 +104,12 @@ namespace Showcast.Infrastructure.Migrations
                             NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
 
                             b1.Property<string>("Body")
-                                .IsRequired()
                                 .HasColumnType("text");
 
                             b1.Property<DateTime>("Expires")
                                 .HasColumnType("timestamp with time zone");
 
                             b1.Property<string>("Fingerprint")
-                                .IsRequired()
                                 .HasColumnType("text");
 
                             b1.Property<int>("UserId")
@@ -139,24 +126,6 @@ namespace Showcast.Infrastructure.Migrations
                         });
 
                     b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Showcast.Core.Entities.Media.Movie", b =>
-                {
-                    b.HasOne("Showcast.Core.Entities.Authentication.User", null)
-                        .WithMany("LikedMovies")
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("Showcast.Core.Entities.Authentication.User", null)
-                        .WithMany("PlannedMovies")
-                        .HasForeignKey("UserId1");
-                });
-
-            modelBuilder.Entity("Showcast.Core.Entities.Authentication.User", b =>
-                {
-                    b.Navigation("LikedMovies");
-
-                    b.Navigation("PlannedMovies");
                 });
 #pragma warning restore 612, 618
         }

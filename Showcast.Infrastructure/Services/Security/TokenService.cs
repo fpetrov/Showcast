@@ -20,7 +20,7 @@ public class TokenService : ITokenService
     
     public (string token, RefreshToken refreshToken) GenerateTokenPair(User user, string fingerprint)
     {
-        return (GenerateToken(user), GenerateRefreshToken(user, fingerprint));
+        return (GenerateToken(user), GenerateRefreshToken(fingerprint));
     }
 
     private string GenerateToken(User user)
@@ -36,14 +36,15 @@ public class TokenService : ITokenService
         return token;
     }
 
-    private RefreshToken GenerateRefreshToken(User user, string fingerprint)
+    private RefreshToken GenerateRefreshToken(string fingerprint)
     {
         var key = HS256Algorithm.GenerateRandomRecommendedKey();
 
-        return new RefreshToken(
-            1,
-            Convert.ToBase64String(key),
-            fingerprint,
-            DateTime.UtcNow.Add(_options.RefreshTokenLifetime));
+        return new RefreshToken
+        {
+            Body = Convert.ToBase64String(key),
+            Fingerprint = fingerprint,
+            Expires = DateTime.UtcNow.Add(_options.RefreshTokenLifetime)
+        };
     }
 }

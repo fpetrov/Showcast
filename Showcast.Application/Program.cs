@@ -39,8 +39,8 @@ app.MapGet("/", () => "This is API for Showcast project, please return to the ma
 
 app.Run();
 
-// JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiRmVkb3IiLCJSb2xlIjoiRGVmYXVsdCIsImV4cCI6MTY3NTAzNzY3OH0.QlxLggjntcR_Sk0T-aO5kSZ_8aW-6wPgtLLjYdye2PE
-// Refresh Token: 3/zrFaFs4DN94zJKy81ajmydi6CamLl4cnS4lpFFa8FpdFR6PzvGObR6njSvUaT+a5+h+lL6LOgkx5DZ0BA8cg==
-// Fingerprint: Mozilla/5.0 (Windows NT 6.1; rv:8.9) Gecko/20100101 Firefox/8.9.0
+// JWT: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJOYW1lIjoiRmVkb3IxIiwiUm9sZSI6IkRlZmF1bHQiLCJleHAiOjE2NzUzNTU0NDF9.LK99b7129Xeuzwi32fUhbxP3cGvIiUzfQEH7UQrpTYk
+// Refresh Token: TAX/hlFgsl8sG8kSTgLmqHxUcHBd+slUx72sWDsU8McebieEGwcxOy3oXTZ+3stCmXqBVcyki16P7iRIdOjv4A==
+// Fingerprint: Mozilla/5.0 (Windows; U; Windows NT 6.3) AppleWebKit/537.0.2 (KHTML, like Gecko) Chrome/25.0.898.0 Safari/537.0.2
 
 //⚠ User is suspected to be part of an online terrorist organization. Please report any suspicious activity to Discord staff.

@@ -5,19 +5,13 @@ using Microsoft.EntityFrameworkCore;
 namespace Showcast.Core.Entities.Authentication;
 
 [Owned]
-public record RefreshToken([property: Key, JsonIgnore] int Id, string Body, string Fingerprint, DateTime Expires)
+public class RefreshToken
 {
-    public bool IsActive => !(DateTime.UtcNow >= Expires);
-
-    private static readonly RefreshToken Default = new(
-        1,
-        "Default",
-        "Default", 
-        DateTime.Now
-    );
+    [Key, JsonIgnore]
+    public int Id { get; set; }
+    public string? Body { get; set; }
+    public string? Fingerprint { get; set; }
+    public DateTime Expires { get; set; }
     
-    public RefreshToken() : this(Default)
-    {
-        
-    }
+    public bool IsActive => !(DateTime.UtcNow >= Expires);
 }

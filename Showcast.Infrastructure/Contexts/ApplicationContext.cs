@@ -16,11 +16,9 @@ public class ApplicationContext : DbContext
         
     }
 
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     // TODO: Додумать работу с Review: Author нужен??
-    //     modelBuilder.Entity<User>()
-    //         .HasMany(user => user.LikedMovies)
-    //         .WithOne(review => review.);
-    // }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .OwnsMany(user => user.RefreshTokens);
+    }
 }

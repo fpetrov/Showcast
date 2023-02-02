@@ -1,32 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Showcast.Core.Entities.Media;
 
 namespace Showcast.Core.Entities.Authentication;
 
-public record User(
-    [property: Key] int Id,
-    string Name,
-    [property: JsonIgnore] string Password,
-    Role Role,
-    List<RefreshToken> RefreshTokens,
-    List<Movie> LikedMovies,
-    List<Movie> PlannedMovies
-    //List<Review> Reviews
-)
+public class User
 {
-    private static readonly User Default = new(
-        1,
-        "Default",
-        "Default",
-        Role.Default,
-        new List<RefreshToken>(),
-        new List<Movie>(),
-        new List<Movie>()
-    );
+    [Key]
+    public int Id { get; set; }
+    public string Name { get; set; }
+    
+    [JsonIgnore] 
+    public string Password { get; set; } 
+    public Role Role { get; set; }
 
-    public User() : this(Default)
-    {
-        
-    }
+    public List<RefreshToken> RefreshTokens { get; } = new();
+    // public List<Movie> LikedMovies { get; set; }
+    // public List<Movie> PlannedMovies { get; set; }
+    // List<Review> Reviews
 }

@@ -37,9 +37,9 @@ public class UserRepository : RepositoryBase<Core.Entities.Authentication.User, 
 
         var (jwt, refreshToken) = _tokenService.GenerateTokenPair(existingUser, request.Fingerprint);
 
+        existingUser.RefreshTokens.RemoveAll(t => !t.IsActive || t.Fingerprint == request.Fingerprint);
+        
         existingUser.RefreshTokens.Add(refreshToken);
-
-        existingUser.RefreshTokens.RemoveAll(t => !t.IsActive);
 
         await UpdateAsync(existingUser, cancellationToken);
 
