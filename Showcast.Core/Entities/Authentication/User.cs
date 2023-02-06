@@ -10,7 +10,12 @@ public class User
     public string Name { get; set; }
     
     [JsonIgnore] 
-    public string Password { get; set; } 
+    public string Password { get; set; }
+
+    public List<string> LikedMovies { get; set; } = new();
+    
+    // Additional things.
+    public long TelegramId { get; set; }
     public Role Role { get; set; }
 
     public List<RefreshToken> RefreshTokens { get; } = new();

@@ -1,4 +1,4 @@
-MigrationName="InitialCommit"
+MigrationName="GlobalUpdate"
 
 SourceProjectName="Showcast.Application"
 TargetProjectName="Showcast.Infrastructure"

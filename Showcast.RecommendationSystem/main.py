@@ -12,13 +12,8 @@ rec_sys = RecSys.from_csv()
 rec_sys.train()
 
 
-@app.get("/")
-async def root():
-    return { "message": "Hello World" }
-
-@app.get("/recommendations/")
-async def load_recommendations(n: Union[str, None] = None):
-    print(n)
+@app.get("/relative/")
+async def load_relative(n: Union[str, None] = None):
     return rec_sys.evaluate(n, recommendations=10)
 
 if __name__ == "__main__":

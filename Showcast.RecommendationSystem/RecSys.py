@@ -35,7 +35,7 @@ class RecSys:
 
         rec_list = self.__prepare_recommendation_list__(distances_list, indices_list)
 
-        rec_df = pd.DataFrame(rec_list, index=range(1, recommendations + 1))
+        rec_df = list(rec_list)
 
         return rec_df
 

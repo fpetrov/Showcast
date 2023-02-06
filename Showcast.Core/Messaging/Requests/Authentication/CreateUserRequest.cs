@@ -3,5 +3,6 @@
 public record CreateUserRequest(
     string Name,
     string Password,
-    string Fingerprint
+    string Fingerprint,
+    long? TelegramId = 0
 );

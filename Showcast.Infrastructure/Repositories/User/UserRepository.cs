@@ -62,6 +62,12 @@ public class UserRepository : RepositoryBase<Core.Entities.Authentication.User, 
         return createdUser == default ? null : new AuthenticateResponse(createdUser.Id, jwt, refreshToken);
     }
 
+    public async Task<Core.Entities.Authentication.User?> Find(Expression<Func<Core.Entities.Authentication.User, bool>> predicate,
+        CancellationToken cancellationToken = default) => await FindAsync(predicate, cancellationToken);
+    
+    public async Task Update(Core.Entities.Authentication.User user,
+        CancellationToken cancellationToken = default) => await UpdateAsync(user, cancellationToken);
+
     public async Task<AuthenticateResponse?> RefreshToken(
         RefreshTokenRequest request,
         CancellationToken cancellationToken = default)

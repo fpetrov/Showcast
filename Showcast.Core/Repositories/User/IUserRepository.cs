@@ -15,6 +15,13 @@ public interface IUserRepository //: IRepository<Entities.Authentication.User>
         CreateUserRequest request,
         Expression<Func<Entities.Authentication.User, bool>>? duplicatePredicate = default,
         CancellationToken cancellationToken = default);
+    
+    public Task<Entities.Authentication.User?> Find(
+        Expression<Func<Core.Entities.Authentication.User, bool>> predicate,
+        CancellationToken cancellationToken = default);
+
+    public Task Update(Core.Entities.Authentication.User user,
+        CancellationToken cancellationToken = default);
 
     public Task<AuthenticateResponse?> RefreshToken(
         RefreshTokenRequest request,
