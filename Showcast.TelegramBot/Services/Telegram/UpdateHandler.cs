@@ -10,7 +10,7 @@ using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace Showcast.TelegramBot.Services;
+namespace Showcast.TelegramBot.Services.Telegram;
 
 public class UpdateHandler : IUpdateHandler
 {

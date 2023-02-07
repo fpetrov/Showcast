@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using Showcast.TelegramBot.Abstract;
+using Showcast.TelegramBot.Services.Telegram.Abstract;
 
-namespace Showcast.TelegramBot.Services;
+namespace Showcast.TelegramBot.Services.Telegram;
 
 // Compose Polling and ReceiverService implementations
 public class PollingService : PollingServiceBase<ReceiverService>

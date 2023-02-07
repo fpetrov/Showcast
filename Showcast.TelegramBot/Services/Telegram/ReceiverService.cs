@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging;
-using Showcast.TelegramBot.Abstract;
+using Showcast.TelegramBot.Services.Telegram.Abstract;
 using Telegram.Bot;
 
-namespace Showcast.TelegramBot.Services;
+namespace Showcast.TelegramBot.Services.Telegram;
 
 // Compose Receiver and UpdateHandler implementation
 public class ReceiverService : ReceiverServiceBase<UpdateHandler>

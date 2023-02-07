@@ -13,6 +13,7 @@ using Showcast.Infrastructure.Services.Security;
 using Showcast.TelegramBot;
 using Showcast.TelegramBot.Extensions;
 using Showcast.TelegramBot.Services;
+using Showcast.TelegramBot.Services.Telegram;
 using Telegram.Bot;
 
 var builder = Host.CreateApplicationBuilder(args);

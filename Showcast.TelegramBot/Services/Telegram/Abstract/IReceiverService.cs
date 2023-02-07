@@ -1,4 +1,4 @@
-﻿namespace Showcast.TelegramBot.Abstract;
+﻿namespace Showcast.TelegramBot.Services.Telegram.Abstract;
 
 public interface IReceiverService
 {
