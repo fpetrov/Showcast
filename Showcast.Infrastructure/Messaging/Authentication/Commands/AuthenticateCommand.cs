@@ -27,7 +27,7 @@ public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, A
         var authenticateRequest = _mapper.Map<AuthenticateRequest>(request);
 
         var response = await _userRepository
-            .Authenticate(authenticateRequest, user =>
+            .SignInAsync(authenticateRequest, user =>
                 _hashService.Verify(authenticateRequest.Password, user.Password), cancellationToken);
 
         return response;

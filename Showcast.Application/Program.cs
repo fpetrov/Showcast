@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Showcast.Application.Extensions;
+using Showcast.Application.Middlewares;
 using Showcast.Infrastructure;
 using Showcast.Infrastructure.Contexts;
 using Showcast.Infrastructure.Services.Http;
@@ -29,8 +30,12 @@ if (builder.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<TelegramMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.MapControllers();
 

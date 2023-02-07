@@ -7,7 +7,7 @@ using Showcast.Core.Services.Security;
 
 namespace Showcast.Infrastructure.Messaging.Authentication.Commands;
 
-public record CreateUserCommand(string Name, string Password, string Fingerprint) : IRequest<AuthenticateResponse>;
+public record CreateUserCommand(string Name, string Password, string Fingerprint, long TelegramId = 0) : IRequest<AuthenticateResponse>;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, AuthenticateResponse?>
 {
@@ -30,7 +30,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Authe
                 Password = _hashService.Hash(request.Password)
             };
         
-        var response = await _userRepository.Create(
+        var response = await _userRepository.SignUpAsync(
             createUserRequest,
             user => user.Name == createUserRequest.Name,
             cancellationToken);

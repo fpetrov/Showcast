@@ -23,7 +23,7 @@ public class RevokeTokenCommandHandler : IRequestHandler<RevokeTokenCommand, boo
         var refreshTokenRequestRequest = _mapper.Map<RevokeTokenRequest>(request);
 
         var response = await _userRepository
-            .RevokeToken(refreshTokenRequestRequest, cancellationToken);
+            .RevokeTokenAsync(refreshTokenRequestRequest, cancellationToken);
 
         return response;
     }

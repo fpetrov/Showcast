@@ -26,9 +26,9 @@ public class MovieService : IMovieService
 
         foreach (var relativeMovie in response!)
         {
-            var title = string.Join(" ", relativeMovie.Title.Split(" ")[..^1]);
+            // var title = string.Join(" ", relativeMovie.Title.Split(" ")[..^1]);
 
-            var movie = await _movieDbService.GetByTitle(title);
+            var movie = await _movieDbService.GetByTitle(relativeMovie.Title);
 
             yield return movie;
         }

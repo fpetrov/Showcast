@@ -18,11 +18,25 @@ public static class HttpContextExtensions
         return context.Response.Cookies;
     }
 
+    public static IHeaderDictionary AppendAuthorizationHeader(this HttpContext context, string jwt)
+    {
+        context.Request.Headers.Authorization += "Bearer " + jwt;
+        
+        return context.Request.Headers;
+    }
+
     public static bool TryGetRefreshToken(this HttpContext context, out string refreshToken)
     {
         refreshToken = context.Request.Cookies[RefreshTokenCookieName]!;
 
         return !string.IsNullOrEmpty(refreshToken);
+    }
+    
+    public static bool TryGetUser(this HttpContext context, out User? user)
+    {
+        user = context.Request.HttpContext.Items["User"] as User;
+
+        return user is not null;
     }
     
     public static string? GetRefreshToken(this HttpContext context)

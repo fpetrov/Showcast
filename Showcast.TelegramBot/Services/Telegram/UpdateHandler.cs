@@ -1,6 +1,8 @@
+using MediatR;
 using Microsoft.Extensions.Logging;
 using Showcast.Core.Repositories.User;
 using Showcast.Core.Services.Http;
+using Showcast.Infrastructure.Messaging.Authentication.Commands;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -75,12 +77,12 @@ public class UpdateHandler : IUpdateHandler
             CancellationToken cancellationToken)
         {
             var titles = message.Text.Split(' ')[1..];
-
-            var user = await _userRepository.Find(user => user.TelegramId == message.From.Id);
+            
+            var user = await _userRepository.FindAsync(user => user.TelegramId == message.From.Id);
             
             user.LikedMovies.AddRange(titles);
-
-            await _userRepository.Update(user, cancellationToken);
+            
+            await _userRepository.UpdateAsync(user, cancellationToken);
             
             return await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,
@@ -117,7 +119,7 @@ public class UpdateHandler : IUpdateHandler
         {
             var payload = message.Text.Split(' ')[1..];
             
-            var user = await _userRepository.Create(new(
+            var user = await _userRepository.SignUpAsync(new(
                 payload[0], payload[1], message.From!.Id.ToString(), message.From.Id));
             
             

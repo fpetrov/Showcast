@@ -2,5 +2,6 @@
 
 public record RefreshTokenRequest(
     string? Token,
-    string Fingerprint
+    string Fingerprint,
+    long TelegramId = 0
 );

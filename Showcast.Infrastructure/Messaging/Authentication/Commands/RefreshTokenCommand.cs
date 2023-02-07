@@ -6,7 +6,7 @@ using Showcast.Core.Repositories.User;
 
 namespace Showcast.Infrastructure.Messaging.Authentication.Commands;
 
-public record RefreshTokenCommand(string? Token, string Fingerprint) : IRequest<AuthenticateResponse>;
+public record RefreshTokenCommand(string? Token, string Fingerprint, long TelegramId = 0) : IRequest<AuthenticateResponse>;
 
 public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, AuthenticateResponse?>
 {
@@ -24,7 +24,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         var refreshTokenRequestRequest = _mapper.Map<RefreshTokenRequest>(request);
 
         var response = await _userRepository
-            .RefreshToken(refreshTokenRequestRequest, cancellationToken);
+            .RefreshTokenAsync(refreshTokenRequestRequest, cancellationToken);
 
         return response;
     }

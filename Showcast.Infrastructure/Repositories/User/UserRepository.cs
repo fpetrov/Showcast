@@ -20,7 +20,7 @@ public class UserRepository : RepositoryBase<Core.Entities.Authentication.User, 
         _mapper = mapper;
     }
 
-    public async Task<AuthenticateResponse?> Authenticate(
+    public async Task<AuthenticateResponse?> SignInAsync(
         AuthenticateRequest request,
         Func<Core.Entities.Authentication.User, bool> passwordVerifier,
         CancellationToken cancellationToken = default)
@@ -46,7 +46,7 @@ public class UserRepository : RepositoryBase<Core.Entities.Authentication.User, 
         return new AuthenticateResponse(existingUser.Id, jwt, refreshToken);
     }
 
-    public async Task<AuthenticateResponse?> Create(
+    public async Task<AuthenticateResponse?> SignUpAsync(
         CreateUserRequest request,
         Expression<Func<Core.Entities.Authentication.User, bool>>? duplicatePredicate = default,
         CancellationToken cancellationToken = default)
@@ -62,28 +62,32 @@ public class UserRepository : RepositoryBase<Core.Entities.Authentication.User, 
         return createdUser == default ? null : new AuthenticateResponse(createdUser.Id, jwt, refreshToken);
     }
 
-    public async Task<Core.Entities.Authentication.User?> Find(Expression<Func<Core.Entities.Authentication.User, bool>> predicate,
-        CancellationToken cancellationToken = default) => await FindAsync(predicate, cancellationToken);
-    
-    public async Task Update(Core.Entities.Authentication.User user,
-        CancellationToken cancellationToken = default) => await UpdateAsync(user, cancellationToken);
-
-    public async Task<AuthenticateResponse?> RefreshToken(
+    public async Task<AuthenticateResponse?> RefreshTokenAsync(
         RefreshTokenRequest request,
         CancellationToken cancellationToken = default)
     {
-        var tokenOwner = await FindAsync(user => 
-            user.RefreshTokens.Any(token => token.Body == request.Token), cancellationToken);
+        Core.Entities.Authentication.User? tokenOwner;
+        
+        if (request.TelegramId != 0)
+        {
+            tokenOwner = await FindAsync(user => 
+                user.TelegramId == request.TelegramId, cancellationToken);
+        }
+        else
+        {
+            tokenOwner = await FindAsync(user => 
+                user.RefreshTokens.Any(token => token.Body == request.Token), cancellationToken);
+            
+            var refreshToken = tokenOwner.RefreshTokens.Single(token => token.Body == request.Token);
+
+            if (!refreshToken.IsActive || request.Fingerprint != refreshToken.Fingerprint)
+                return default;
+
+            tokenOwner.RefreshTokens.Remove(refreshToken);
+        }
 
         if (tokenOwner == null)
             return default;
-
-        var refreshToken = tokenOwner.RefreshTokens.Single(token => token.Body == request.Token);
-
-        if (!refreshToken.IsActive || request.Fingerprint != refreshToken.Fingerprint)
-            return default;
-
-        tokenOwner.RefreshTokens.Remove(refreshToken);
 
         var (jwt, newRefreshToken) = _tokenService.GenerateTokenPair(tokenOwner, request.Fingerprint);
         
@@ -94,7 +98,7 @@ public class UserRepository : RepositoryBase<Core.Entities.Authentication.User, 
         return new AuthenticateResponse(tokenOwner.Id, jwt, newRefreshToken);
     }
 
-    public async Task<bool> RevokeToken(
+    public async Task<bool> RevokeTokenAsync(
         RevokeTokenRequest request,
         CancellationToken cancellationToken = default)
     {

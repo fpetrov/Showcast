@@ -20,6 +20,19 @@ public class UserController : ControllerBase
         _mediator = mediator;
         _mapper = mapper;
     }
+
+    [HttpPost("liked")]
+    public async Task<IActionResult> UpdateLikedMovies([FromBody] string[] movies)
+    {
+        if (!HttpContext.TryGetUser(out var user))
+            return BadRequest();
+
+        user.LikedMovies.AddRange(movies);
+
+        var request = await _mediator.Send(new UpdateUserCommand(user));
+
+        return Ok(request);
+    }
     
     [AllowAnonymous]
     [HttpPost]

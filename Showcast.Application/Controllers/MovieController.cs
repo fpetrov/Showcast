@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Showcast.Application.Extensions;
 using Showcast.Infrastructure.Services.Http;
 
 namespace Showcast.Application.Controllers;
@@ -25,6 +26,11 @@ public class MovieController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok("Ok!!!!!!");
+        if (HttpContext.TryGetUser(out var user))
+        {
+            return Ok("Hello, " + user.Name + "!");
+        }
+
+        return BadRequest();
     }
 }

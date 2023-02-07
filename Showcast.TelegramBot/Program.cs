@@ -49,3 +49,23 @@ builder.Services.AddHostedService<PollingService>();
 var app = builder.Build();
 
 app.Run();
+
+
+// using System.Text;
+//
+// var path = @"D:\Projects\Web\Showcast\Showcast.RecommendationSystem\Notebooks\RecSys\Datasets\movies.csv";
+//
+// var file = File.ReadAllLines(path);
+//
+// for (var i = 1; i < file.Length; i++)
+// {
+//     var split = file[i].Split(',');
+//
+//     var filteredTitle = string.Join(" ", split[1].Split(' ')[..^1]);
+//
+//     var newLine = $"{split[0]},{filteredTitle},{split[2]}";
+//
+//     file[i] = newLine;
+// }
+//
+// File.WriteAllLines(path, file);
