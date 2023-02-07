@@ -9,7 +9,7 @@ public record AuthenticationOptions(
 )
 {
     public static AuthenticationOptions Default = new(
-        "Showcast.Key",
+        "chdopqazx54effke456vd439gfj5326c7b1hjw=578flhaiop23",
         "Showcast.Application",
         "Showcast.UI",
         TimeSpan.FromMinutes(60),

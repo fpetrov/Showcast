@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Showcast.Infrastructure.Services.Http;
 
 namespace Showcast.Application.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class MovieController : ControllerBase
@@ -18,5 +20,11 @@ public class MovieController : ControllerBase
     public async Task<IActionResult> GetRelative([FromQuery] string movieName)
     {
         return Ok(await _recommendationService.GetRelativeMovies(movieName));
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok("Ok!!!!!!");
     }
 }

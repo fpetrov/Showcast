@@ -1,7 +1,9 @@
-﻿using System.Text;
-using LitJWT;
-using LitJWT.Algorithms;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Showcast.Core.Entities.Authentication;
 using Showcast.Core.Services.Security;
 
@@ -9,13 +11,11 @@ namespace Showcast.Infrastructure.Services.Security;
 
 public class TokenService : ITokenService
 {
-    private readonly JwtEncoder _encoder;
     private readonly AuthenticationOptions _options;
 
     public TokenService(IOptions<AuthenticationOptions> options)
     {
         _options = options.Value;
-        _encoder = new JwtEncoder(new HS256Algorithm(Encoding.UTF8.GetBytes(_options.SecurityKey)));
     }
     
     public (string token, RefreshToken refreshToken) GenerateTokenPair(User user, string fingerprint)
@@ -25,20 +25,38 @@ public class TokenService : ITokenService
 
     private string GenerateToken(User user)
     {
-        var payload = new
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecurityKey));
+        
+        var jwt = new JwtSecurityToken(
+            _options.Issuer,
+            _options.Audience,
+            notBefore: DateTime.UtcNow,
+            claims: GetClaims(user).Claims,
+            expires: DateTime.UtcNow.Add(_options.TokenLifetime),
+            signingCredentials: new SigningCredentials(
+                symmetricSecurityKey,
+                SecurityAlgorithms.HmacSha256));
+
+        return tokenHandler.WriteToken(jwt);
+    }
+    
+    private static ClaimsIdentity GetClaims(User user)
+    {
+        var claims = new List<Claim>
         {
-            Name = user.Name,
-            Role = user.Role.ToString()
+            new("name", user.Name),
+            new("role", user.Role.ToString())
         };
 
-        var token = _encoder.Encode(payload, _options.TokenLifetime);
-        
-        return token;
+        var claimsIdentity = new ClaimsIdentity(claims, "Token", "name", "role");
+
+        return claimsIdentity;
     }
 
     private RefreshToken GenerateRefreshToken(string fingerprint)
     {
-        var key = HS256Algorithm.GenerateRandomRecommendedKey();
+        var key = RandomNumberGenerator.GetBytes(128);
 
         return new RefreshToken
         {
