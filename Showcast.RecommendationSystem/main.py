@@ -18,7 +18,7 @@ async def load_relative(n: Union[str, None] = None):
 
 
 @app.get("/recommendations/")
-async def load_relative(n: Union[str, None] = None):
+async def recommendations(n: Union[str, None] = None):
     movies = n.split(',')
 
     response = []

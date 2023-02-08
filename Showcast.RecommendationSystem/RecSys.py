@@ -37,6 +37,10 @@ class RecSys:
 
         rec_df = list(rec_list)
 
+        for rec in rec_df:
+            if rec['Distance'] == 0.3641902174599554:
+                rec_df.remove(rec)
+
         return rec_df
 
     def __prepare_recommendation_list__(self, distances_list, indices_list):
