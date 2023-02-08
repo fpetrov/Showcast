@@ -16,8 +16,8 @@ public class RecommendationService : IRecommendationService
         _httpClient.BaseAddress ??= new Uri($"http://localhost:5002/");
     }
 
-    public async Task<HttpResponseMessage> GetRecommendations(int[] likedMoviesIds) 
-        => await _httpClient.PostAsJsonAsync("recommendations/", likedMoviesIds);
+    public async Task<string[]?> GetRecommendations(string likedMoviesTitles) 
+        => await _httpClient.GetFromJsonAsync<string[]>($"recommendations?n={likedMoviesTitles}");
 
     public async Task<RelativeMoviesResponse[]?> GetRelativeMovies(string movieName) 
         => await _httpClient.GetFromJsonAsync<RelativeMoviesResponse[]?>($"relative?n={movieName}");

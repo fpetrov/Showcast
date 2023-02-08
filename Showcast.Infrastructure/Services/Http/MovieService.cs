@@ -39,8 +39,17 @@ public class MovieService : IMovieService
         return _movieDbService.GetByTitle(name);
     }
 
-    public IAsyncEnumerable<Movie?> GetRecommendations(User user)
+    public async IAsyncEnumerable<Movie?> GetRecommendations(User user)
     {
-        throw new NotImplementedException();
+        var titles = string.Join(',', user.LikedMovies);
+
+        var recommendations = await _recommendationService.GetRecommendations(titles);
+        
+        foreach (var relativeMovie in recommendations!)
+        {
+            var movie = await _movieDbService.GetByTitle(relativeMovie);
+
+            yield return movie;
+        }
     }
 }

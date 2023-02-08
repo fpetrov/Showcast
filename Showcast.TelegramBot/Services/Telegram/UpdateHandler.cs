@@ -59,24 +59,67 @@ public class UpdateHandler : IUpdateHandler
         var action = messageText.Split(' ')[0] switch
         {
             "/inline_keyboard" => SendInlineKeyboard(_botClient, message, cancellationToken),
-            "/keyboard"        => SendReplyKeyboard(_botClient, message, cancellationToken),
-            "/remove"          => RemoveKeyboard(_botClient, message, cancellationToken),
-            "/request"         => RequestContactAndLocation(_botClient, message, cancellationToken),
-            "/inline_mode"     => StartInlineQuery(_botClient, message, cancellationToken),
-            "/throw"           => FailingHandler(_botClient, message, cancellationToken),
-            "/relative"        => SendRelativeMovies(_botClient, message, cancellationToken),
-            "/login"        => SendLoginMessage(_botClient, message, cancellationToken),
-            "/like"        => AddLikedMovies(_botClient, message, cancellationToken),
-            "/info"        => SendMovieInfo(_botClient, message, cancellationToken),
-            _                  => Usage(_botClient, message, cancellationToken)
+            "/keyboard" => SendReplyKeyboard(_botClient, message, cancellationToken),
+            "/remove" => RemoveKeyboard(_botClient, message, cancellationToken),
+            "/request" => RequestContactAndLocation(_botClient, message, cancellationToken),
+            "/inline_mode" => StartInlineQuery(_botClient, message, cancellationToken),
+            "/throw" => FailingHandler(_botClient, message, cancellationToken),
+            "/relative" => SendRelativeMovies(_botClient, message, cancellationToken),
+            "/recommendations" => SendRecommendations(_botClient, message, cancellationToken),
+            "/login" => SendLoginMessage(_botClient, message, cancellationToken),
+            "/like" => AddLikedMovies(_botClient, message, cancellationToken),
+            "/likes" => SendLikedMovies(_botClient, message, cancellationToken),
+            "/info" => SendMovieInfo(_botClient, message, cancellationToken),
+            _ => Usage(_botClient, message, cancellationToken)
         };
         var sentMessage = await action;
         _logger.LogInformation("The message was sent with id: {SentMessageId}", sentMessage.MessageId);
 
+        async Task<Message> SendLikedMovies(ITelegramBotClient botClient, Message message,
+            CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.FindAsync(user => user.TelegramId == message.From.Id);
+            
+            return await botClient.SendTextMessageAsync(
+                chatId: message.Chat.Id,
+                text: string.Join(", ", user.LikedMovies),
+                cancellationToken: cancellationToken);
+        }
+
+    async Task<Message> SendRecommendations(ITelegramBotClient botClient, Message message,
+            CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.FindAsync(user => user.TelegramId == message.From.Id);
+            var recommendations = _movieService.GetRecommendations(user);
+
+            await foreach (var relative in recommendations)
+            {
+                var caption =
+                    $"***{relative.Title}***, ***{relative.Rating} / 10*** \n \n" +
+                    $"{relative.Plot}       \n" +
+                    "\n" +
+                    $"***Genres***: {relative.Genre} \n \n" +
+                    $"***Released in {relative.Year}***";
+
+                await botClient.SendPhotoAsync(chatId: message.Chat.Id,
+                    photo: new InputOnlineFile(new Uri(relative.PosterAddress)),
+                    caption: caption,
+                    ParseMode.Markdown,
+                    cancellationToken: cancellationToken);
+            }
+            
+            return await botClient.SendTextMessageAsync(
+                chatId: message.Chat.Id,
+                text: $"А вот и ваши рекомендации",
+                cancellationToken: cancellationToken);
+        }
+        
         async Task<Message> AddLikedMovies(ITelegramBotClient botClient, Message message,
             CancellationToken cancellationToken)
         {
-            var titles = message.Text.Split(' ')[1..];
+            var text = string.Join(' ', message.Text.Split(' ')[1..]);
+
+            var titles = text.Split(',');
             
             var user = await _userRepository.FindAsync(user => user.TelegramId == message.From.Id);
             

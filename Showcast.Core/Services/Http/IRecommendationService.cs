@@ -4,7 +4,7 @@ namespace Showcast.Core.Services.Http;
 
 public interface IRecommendationService
 {
-    public Task<HttpResponseMessage> GetRecommendations(int[] likedMoviesIds);
+    public Task<string[]?> GetRecommendations(string likedMoviesTitles);
 
     public Task<RelativeMoviesResponse[]?> GetRelativeMovies(string movieName);
 }
